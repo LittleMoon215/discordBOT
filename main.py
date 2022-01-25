@@ -6,7 +6,7 @@ import requests
 
 import lists
 import discord
-from discord import AllowedMentions, User, Member, Intents, TextChannel, ChannelType
+from discord import AllowedMentions, User, Member, Intents, TextChannel, ChannelType, VoiceChannel
 from discord.ext import commands
 from discord.ext.commands import Context
 
@@ -48,9 +48,15 @@ async def meme(ctx: Context):
 @bot.command()
 async def annoy(ctx: Context):
     _annoy = True
-    channels = [channel for channel in ctx.guild.channels if channel.type == ChannelType.voice]
+    channels: List[VoiceChannel] = [channel for channel in ctx.guild.channels if channel.type == ChannelType.voice]
     while _annoy:
         for channel in channels:
-            if channel.
+            if channel.members > 0:
+
         await asyncio.sleep(5)
+
+@bot.command()
+async def stop_annoy(ctx: Context):
+    _annoy = False
+
 bot.run(settings['token'])
