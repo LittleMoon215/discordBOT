@@ -3,10 +3,10 @@ import random
 from typing import List
 
 import requests
-
+import youtube
 import lists
 import discord
-from discord import AllowedMentions, User, Member, Intents, TextChannel, ChannelType, VoiceChannel
+from discord import AllowedMentions, User, Member, Intents, TextChannel, ChannelType, VoiceChannel, VoiceClient
 from discord.ext import commands
 from discord.ext.commands import Context
 
@@ -16,7 +16,7 @@ intents: Intents = discord.Intents.default()
 intents.members = True
 
 
-bot = commands.Bot(command_prefix=settings['prefix'], intents=intents)
+bot: commands.Bot = commands.Bot(command_prefix=settings['prefix'], intents=intents)
 _annoy = False
 
 @bot.command()
@@ -47,16 +47,24 @@ async def meme(ctx: Context):
 
 @bot.command()
 async def annoy(ctx: Context):
+    global _annoy
     _annoy = True
     channels: List[VoiceChannel] = [channel for channel in ctx.guild.channels if channel.type == ChannelType.voice]
     while _annoy:
         for channel in channels:
-            if channel.members > 0:
+            if len(channel.members) > 0:
+                vc: VoiceClient = await channel.connect()
+                player = await youtube.YTDLSource.from_url("https://www.youtube.com/watch?v=1_BUBGUz-0Q")
+                vc.play(player)
+                while vc.is_playing():
+                    await asyncio.sleep(1)
+                await vc.disconnect()
+        await asyncio.sleep(10)
 
-        await asyncio.sleep(5)
 
 @bot.command()
 async def stop_annoy(ctx: Context):
+    global _annoy
     _annoy = False
 
 bot.run(settings['token'])
