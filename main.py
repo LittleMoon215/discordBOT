@@ -59,7 +59,7 @@ async def annoy(ctx: Context):
                 while vc.is_playing():
                     await asyncio.sleep(1)
                 await vc.disconnect()
-        await asyncio.sleep(10)
+        await asyncio.sleep(600)
 
 
 @bot.command()
