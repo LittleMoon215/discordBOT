@@ -1,5 +1,5 @@
 settings = {
-    'token': 'OTM1NDQ3OTE5MzYyOTg2MDA1.Ye-xww.ZKXsoHKzPn7NzYrqnTf2UQqH0zI',
+    'token': os.environ["TOKEN"],
     'bot': 'LittleBot',
     'id': 935447919362986005,
     'prefix': '-'
